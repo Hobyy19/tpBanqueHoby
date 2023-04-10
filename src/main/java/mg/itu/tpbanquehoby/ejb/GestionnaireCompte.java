@@ -42,8 +42,14 @@ public class GestionnaireCompte {
     
     public List<CompteBancaire> getAllComptes(){
         String s = " select c from CompteBancaire c";
-        TypedQuery<CompteBancaire> query = em.createNamedQuery(s, CompteBancaire.class);
+        TypedQuery<CompteBancaire> query = em.createNamedQuery("CompteBancaire.findAll", CompteBancaire.class);
         List<CompteBancaire> liste = query.getResultList();
         return liste;
+    }
+    
+    public long countCompte(){
+        Query query = em.createNamedQuery("CompteBancaire.count");
+        Long result = (Long)query.getSingleResult();
+        return result.longValue() ;
     }
 }
