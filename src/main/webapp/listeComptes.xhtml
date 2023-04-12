@@ -47,10 +47,13 @@
                             <f:facet name="header">
                                 <h:outputText value="Opérations"/>
                             </f:facet>
+                            <h:link outcome="modifierNom?id=#{item.id}"
+                                        value="Changer le nom"/>
                             <h:commandLink action="#{listeComptes.deleteCompte(item)}"
                                            title="Supprimer le compte de #{item.nom}" >
                                 <h:graphicImage name="images/del.png"/>
                             </h:commandLink>
+                            
                         </p:column>
                       </p:dataTable>
                     </h:form>
