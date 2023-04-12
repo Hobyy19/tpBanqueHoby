@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 import mg.itu.tpbanquehoby.ejb.GestionnaireCompte;
 import mg.itu.tpbanquehoby.entities.CompteBancaire;
+import mg.itu.tpbanquehoby.jsf.util.Util;
 
 
 /**
@@ -30,9 +31,15 @@ public class ListeComptes implements Serializable  {
     }
     
     public List<CompteBancaire> getAllComptes() {
-    if (allComptes == null) {
-      allComptes = gestionnaireCompte.getAllComptes();
+        if (allComptes == null) {
+          allComptes = gestionnaireCompte.getAllComptes();
+        }
+        return allComptes;
+    } 
+    
+    public String deleteCompte(CompteBancaire c) {
+        gestionnaireCompte.delete(c);
+        Util.addFlashInfoMessage("Le compte de " + c.getNom() + " a été supprimé avec succès");
+        return "listeComptes?faces-redirect=true";
     }
-    return allComptes;
-  }  
 }

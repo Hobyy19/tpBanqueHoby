@@ -57,6 +57,10 @@ public class GestionnaireCompte {
         em.merge(c);
     }
     
+    public void delete(CompteBancaire c) {
+        em.remove(em.merge(c));
+    }
+    
     public CompteBancaire findCompte(Long id){
         return em.find(CompteBancaire.class,id);
     }
