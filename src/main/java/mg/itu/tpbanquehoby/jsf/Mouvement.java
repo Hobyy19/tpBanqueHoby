@@ -5,12 +5,14 @@
 package mg.itu.tpbanquehoby.jsf;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIInput;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import jakarta.persistence.OptimisticLockException;
 import java.io.Serializable;
 import mg.itu.tpbanquehoby.ejb.GestionnaireCompte;
 import mg.itu.tpbanquehoby.entities.CompteBancaire;
@@ -88,13 +90,28 @@ public class Mouvement implements Serializable{
   }
   
   public String enregistrerMouvement() {
-    if (typeMouvement.equals("ajout")) {
-      gestionnaireCompte.deposer(compte, montant);
-    } else {
-      gestionnaireCompte.retirer(compte, montant);
+    try{
+      if (typeMouvement.equals("ajout")) {
+        gestionnaireCompte.deposer(compte, montant);
+      } else {
+        gestionnaireCompte.retirer(compte, montant);
+      }
+      Util.addFlashInfoMessage("Mouvement enregistré sur compte de " + compte.getNom());
+      return "listeComptes?faces-redirect=true";  
+    } catch ( EJBException e){
+        Throwable cause = e.getCause();
+        if (cause != null) {
+            if (cause instanceof OptimisticLockException) {
+              Util.messageErreur("Le compte de " + compte.getNom()+ " a été modifié ou supprimé par un autre utilisateur !");  
+            } else { 
+              Util.messageErreur(cause.getMessage());
+            }
+        } else { 
+            Util.messageErreur(e.getMessage());
+        }
+        return null;
     }
-    Util.addFlashInfoMessage("Mouvement enregistré sur compte de " + compte.getNom());
-    return "listeComptes?faces-redirect=true";
+    
   }
     
 }
