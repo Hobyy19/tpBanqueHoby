@@ -55,6 +55,14 @@
                             </h:commandLink>
                             
                         </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText escape="false" value="Historique&lt;br/>opérations"/>
+                            </f:facet>
+                            <h:link value="Details" outcome="historiqueOperation">
+                                <f:param name="id" value="#{item.id}" />
+                            </h:link>
+                        </p:column>
                       </p:dataTable>
                     </h:form>
                     <h:messages/> 
